@@ -1,0 +1,43 @@
+/* Nav / Accordion */
+.header { padding-left: 18px; padding-top:4px; padding-bottom:4px; background-color: #222222; color: white; vertical-align: middle; }
+.header h2 { text-transform: uppercase; }
+
+.icon2x { font-size: 2rem; position: relative; top: -10px; }
+.no-pad { padding-left: 0px; padding-right: 0px; }
+.fit-content { max-height: fit-content !important; height: fit-content !important; }
+
+/* General */
+a { color: #01579b; cursor: pointer; }
+a:hover { text-decoration: underline solid #01579b; }
+
+/* Cards */
+.game-card { width: 290px; height: 390px; border-radius: 8px; border-style: solid; border-color: black; padding: 2px; margin: 4px; background-color: white; }
+.rank-symbol { font-size: 4.0em }
+.back-of-card { width: 285px; height: 386px; border-radius: 6px; border-style: solid; border-color: #21007F; background-image: url('/icons/back.jpg'); background-repeat: repeat; }
+.pile { position: relative; }
+
+/* Forms */
+.form-box { border-left: 1px solid #D5DADD; border-top: 1px solid #D5DADD; }
+.form-box-right { border-right: 1px solid #D5DADD; }
+.form-box-bottom { border-bottom: 1px solid #D5DADD; }
+.form-label { text-transform: uppercase; font-size: 0.8rem; color: #899099; }
+.submit-button { width: 18em; }
+.submit-button-container { text-align: right; padding-right: 12px; }
+.optional { font-size: 0.8rem; color: #899099; text-align: right; padding-right: 10px; padding-top: 4px; }
+.full-width { width: 99%; }
+.half-width { width: 49% }
+.label { vertical-align: middle; margin-top: 10px; }
+.button-width-normal { width: 5rem; }
+
+/* Formatting */
+.float-right { float: right; }
+.float-left {float:left;}
+.text-align-left { text-align: left; }
+.text-align-right { text-align: right; }
+.text-align-center { text-align: center; }
+.text-red { color: #E53935; }
+.text-black { color: black; }
+.margin-left-10 { margin-left: 10px; }
+.padding-left-10 { padding-left: 10px; }
+.font-small { font-size: 0.8em; }
+.vertical-middle { vertical-align: middle; }
