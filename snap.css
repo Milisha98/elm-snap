@@ -12,9 +12,13 @@ a:hover { text-decoration: underline solid #01579b; }
 
 /* Cards */
 .game-card { width: 290px; height: 390px; border-radius: 8px; border-style: solid; border-color: black; padding: 2px; margin: 4px; background-color: white; }
+.empty-pile { width: 290px; height: 390px; border-radius: 8px; border-style: dashed; border-color: #222222; padding: 2px; margin: 4px; background-color: white; }
 .rank-symbol { font-size: 4.0em }
 .back-of-card { width: 285px; height: 386px; border-radius: 6px; border-style: solid; border-color: #21007F; background-image: url('/icons/back.jpg'); background-repeat: repeat; }
 .pile { position: relative; }
+
+/* Game */
+.game-area { margin-top: 60px; }
 
 /* Forms */
 .form-box { border-left: 1px solid #D5DADD; border-top: 1px solid #D5DADD; }
@@ -38,6 +42,7 @@ a:hover { text-decoration: underline solid #01579b; }
 .text-red { color: #E53935; }
 .text-black { color: black; }
 .margin-left-10 { margin-left: 10px; }
+.margin-top-10 { margin-left: 10px; }
 .padding-left-10 { padding-left: 10px; }
 .font-small { font-size: 0.8em; }
 .vertical-middle { vertical-align: middle; }
