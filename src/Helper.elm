@@ -1,6 +1,14 @@
-module Helper exposing (cardToIcon, cardToString, pluralize, turnToString)
+module Helper exposing (cardToIcon, cardToString, ifTrue, pluralize, turnToString)
 
 import Types exposing (Card(..), Turn(..))
+
+
+ifTrue f a b =
+    if f then
+        a
+
+    else
+        b
 
 
 pluralize : Int -> String -> String

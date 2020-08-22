@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Helper exposing (cardToIcon)
+import Helper exposing (cardToIcon, ifTrue)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
@@ -16,8 +16,12 @@ view model =
                 [ div [ class "col-sm-3" ] [ viewPlayer Player1 model ]
                 , div [ class "col-sm-4" ] [ viewGameArea model ]
                 , div [ class "col-sm-3" ] [ viewPlayer Player2 model ]
-                , div [ class "col-sm-2" ] [ viewModel model ]
+                , div [ class "col-sm-2" ] [ viewMessages model ]
                 ]
+            ]
+        , div [ class "container" ]
+            [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ text "Model" ] ]
+            , div [ class "row" ] []
             ]
 
         -- , viewPile NoOp
@@ -26,14 +30,13 @@ view model =
 
 
 viewPlayer : Turn -> Model -> Html Msg
-viewPlayer turn model =
+viewPlayer player model =
     let
         playerCards =
-            if model.turn == Player1 then
-                model.player1
+            ifTrue (player == Player1) model.player1 model.player2
 
-            else
-                model.player2
+        cmd =
+            ifTrue (player == model.turn) TurnCard NoOp
 
         show =
             case playerCards of
@@ -41,18 +44,19 @@ viewPlayer turn model =
                     viewEmptyPile
 
                 _ ->
-                    viewPile NoOp
+                    viewPile cmd
     in
     div [ class "container" ]
-        [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ turn |> Helper.turnToString |> text ] ]
+        [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ player |> Helper.turnToString |> text ] ]
         , div [ class "row" ] [ show ]
+        , div [ class "row" ] [ button [ class "card-width" ] [ text "SNAP!" ] ]
         ]
 
 
-viewModel : Model -> Html Msg
-viewModel model =
+viewMessages : Model -> Html Msg
+viewMessages model =
     div [ class "container form-box" ]
-        [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ text "Model" ] ]
+        [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ text "Messages" ] ]
         ]
 
 
@@ -60,8 +64,8 @@ viewGameArea : Model -> Html Msg
 viewGameArea model =
     div [ class "container game-area" ]
         [ div [ class "row" ]
-            [ div [ class "col-sm-6" ] [ viewEmptyPile ]
-            , div [ class "col-sm-6" ] [ viewEmptyPile ]
+            [ div [ class "col-sm-6" ] [ model.pile1 |> Maybe.map viewCard |> Maybe.withDefault viewEmptyPile ]
+            , div [ class "col-sm-6" ] [ model.pile2 |> Maybe.map viewCard |> Maybe.withDefault viewEmptyPile ]
             ]
         ]
 
