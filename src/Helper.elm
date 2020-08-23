@@ -36,6 +36,9 @@ turnToString turn =
         Player2 ->
             "Player 2"
 
+        GameOver ->
+            "Game Over"
+
 
 
 --

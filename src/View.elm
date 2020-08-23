@@ -49,7 +49,7 @@ viewPlayer player model =
     div [ class "container" ]
         [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ player |> Helper.turnToString |> text ] ]
         , div [ class "row" ] [ show ]
-        , div [ class "row" ] [ button [ class "card-width" ] [ text "SNAP!" ] ]
+        , div [ class "row" ] [ button [ class "card-width", onClick (Snap player) ] [ text "SNAP!" ] ]
         ]
 
 

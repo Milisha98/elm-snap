@@ -1,7 +1,7 @@
 module State exposing (initialModel, update)
 
 import Helper exposing (ifTrue)
-import Types exposing (Model, Msg(..), Turn(..))
+import Types exposing (Card(..), Model, Msg(..), Turn(..))
 
 
 
@@ -39,6 +39,10 @@ update msg model =
                 |> turnCard
                 |> changeTurns
 
+        Snap player ->
+            model
+                |> snap player
+
 
 
 --
@@ -65,18 +69,82 @@ turnCard model =
                 , player2 = model.player2 |> removeFromStack
             }
 
+        GameOver ->
+            model
+
 
 changeTurns : Model -> Model
 changeTurns model =
     let
         newTurn =
-            ifTrue (model.turn == Player1) Player2 Player1
+            if model.turn == Player1 then
+                Player2
+
+            else
+                Player1
 
         newRound =
-            ifTrue (model.turn == Player1) model.round (model.round + 1)
+            if model.turn == Player1 then
+                model.round
+
+            else
+                model.round + 1
+
+        checkGameOver m =
+            case ( m.player1, m.player2 ) of
+                ( [], _ ) ->
+                    { m | turn = GameOver, message = "Player 2 Wins!" }
+
+                ( _, [] ) ->
+                    { m | turn = GameOver, message = "Player 1 Wins!" }
+
+                ( _, _ ) ->
+                    m
     in
     { model
         | turn = newTurn
         , message = Helper.turnToString newTurn ++ "'s Turn"
         , round = newRound
     }
+        |> checkGameOver
+
+
+snap : Turn -> Model -> Model
+snap who model =
+    let
+        isSnap =
+            model.pile1 /= Nothing && model.pile1 == model.pile2
+
+        addPile pile =
+            let
+                p1 =
+                    model.pile1 |> Maybe.withDefault Cow
+
+                p2 =
+                    model.pile2 |> Maybe.withDefault Cow
+            in
+            p2 :: (p1 :: pile)
+    in
+    if isSnap then
+        case who of
+            Player1 ->
+                { model
+                    | player1 = model.player1 |> addPile
+                    , pile1 = Nothing
+                    , pile2 = Nothing
+                    , message = "Player 2 wins that round."
+                }
+
+            Player2 ->
+                { model
+                    | player2 = model.player2 |> addPile
+                    , pile1 = Nothing
+                    , pile2 = Nothing
+                    , message = "Player 2 wins that round."
+                }
+
+            GameOver ->
+                model
+
+    else
+        model

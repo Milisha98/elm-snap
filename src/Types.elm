@@ -15,6 +15,7 @@ type alias Model =
 type Msg
     = NoOp
     | TurnCard
+    | Snap Turn
 
 
 
@@ -24,6 +25,7 @@ type Msg
 type Turn
     = Player1
     | Player2
+    | GameOver
 
 
 
