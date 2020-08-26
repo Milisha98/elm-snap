@@ -49,7 +49,9 @@ viewPlayer player model =
     div [ class "container" ]
         [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ player |> Helper.turnToString |> text ] ]
         , div [ class "row" ] [ show ]
+        , div [ class "row" ] [ hr [] [] ]
         , div [ class "row" ] [ button [ class "card-width", onClick (Snap player) ] [ text "SNAP!" ] ]
+        , div [ class "row" ] [ div [ class "col-sm-12" ] [ (playerCards |> List.length |> String.fromInt) ++ " cards remaining" |> text ] ]
         ]
 
 
@@ -67,6 +69,7 @@ viewGameArea model =
             [ div [ class "col-sm-6" ] [ model.pile1 |> Maybe.map viewCard |> Maybe.withDefault viewEmptyPile ]
             , div [ class "col-sm-6" ] [ model.pile2 |> Maybe.map viewCard |> Maybe.withDefault viewEmptyPile ]
             ]
+        , div [ class "row" ] [ div [ class "col-sm-12 game-message" ] [ text model.message ] ]
         ]
 
 
@@ -87,10 +90,25 @@ viewCardBack msg =
         [ div [ class "back-of-card" ] [] ]
 
 
+viewCardBackInactive : Html Msg
+viewCardBackInactive =
+    div [ class "game-card" ]
+        [ div [ class "back-of-card-inactive" ] [] ]
+
+
 viewPile : Msg -> Html Msg
 viewPile msg =
-    div [ class "game-card", onClick msg ]
-        [ div [ class "game-card pile" ] [ viewCardBack msg ]
+    let
+        card =
+            case msg of
+                TurnCard ->
+                    viewCardBack msg
+
+                _ ->
+                    viewCardBackInactive
+    in
+    div [ class "game-card" ]
+        [ div [ class "game-card pile" ] [ card ]
         ]
 
 

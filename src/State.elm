@@ -12,8 +12,8 @@ import Types exposing (Card(..), Model, Msg(..), Turn(..))
 
 initialModel : Model
 initialModel =
-    { player1 = []
-    , player2 = []
+    { player1 = Helper.player1Deck
+    , player2 = Helper.player2Deck
     , pile1 = Maybe.Nothing
     , pile2 = Maybe.Nothing
     , message = "Welcome! Player 1 to start."
@@ -132,7 +132,7 @@ snap who model =
                     | player1 = model.player1 |> addPile
                     , pile1 = Nothing
                     , pile2 = Nothing
-                    , message = "Player 2 wins that round."
+                    , message = "Player 1 wins that round."
                 }
 
             Player2 ->

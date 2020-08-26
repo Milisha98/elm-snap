@@ -15,11 +15,13 @@ a:hover { text-decoration: underline solid #01579b; }
 .empty-pile { width: 290px; height: 390px; border-radius: 8px; border-style: dashed; border-color: #222222; padding: 2px; margin: 4px; background-color: white; }
 .rank-symbol { font-size: 4.0em }
 .back-of-card { width: 285px; height: 386px; border-radius: 6px; border-style: solid; border-color: #21007F; background-image: url('/icons/back.jpg'); background-repeat: repeat; }
+.back-of-card-inactive { width: 285px; height: 386px; border-radius: 6px; border-style: solid; border-color: #444444; background-image: url('/icons/back-inactive.jpg'); background-repeat: repeat; }
 .pile { position: relative; }
 .card-width { width: 290px; }
 
 /* Game */
 .game-area { margin-top: 60px; }
+.game-message { text-align: center; font-size: 1.2em; }
 
 
 /* Forms */

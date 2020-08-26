@@ -92,8 +92,13 @@ cardToString card =
 
 
 -- Shuffling will come in another version (not in this demo)
+
+
 player1Deck : List Card
-player1Deck = [Duck, Horse, Horse, Dog, Duck, Duck, Dog, Rooster, Rooster, Horse, Cow, Rooster]
+player1Deck =
+    [ Duck, Horse, Dog, Horse, Duck, Fish, Duck, Dog, Rooster, Fish, Cow, Rooster ]
+
 
 player2Deck : List Card
-player2Deck = [Cow, Dog, Fish, Fish, Fish, Horse, Dog, Cow, Duck, Fish, Cow, Rooster]
+player2Deck =
+    [ Cow, Dog, Fish, Dog, Fish, Horse, Dog, Cow, Duck, Fish, Cow, Rooster ]
