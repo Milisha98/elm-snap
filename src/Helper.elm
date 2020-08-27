@@ -1,6 +1,6 @@
-module Helper exposing (cardToIcon, cardToString, ifTrue, player1Deck, player2Deck, pluralize, turnToString, msgToString)
+module Helper exposing (appendToList, cardListToString, cardToIcon, cardToString, ifTrue, msgToString, player1Deck, player2Deck, pluralize, turnToString)
 
-import Types exposing (Card(..), Turn(..), Msg(..))
+import Types exposing (Card(..), Msg(..), Turn(..))
 
 
 ifTrue f a b =
@@ -19,6 +19,11 @@ pluralize count text =
 
         x ->
             (x |> String.fromInt) ++ " " ++ text ++ "s"
+
+
+appendToList : a -> List a -> List a
+appendToList item list =
+    List.append list (List.singleton item)
 
 
 
@@ -90,6 +95,11 @@ cardToString card =
             "Fish"
 
 
+cardListToString : List Card -> String
+cardListToString list =
+    list |> List.map cardToString |> List.intersperse ", " |> List.foldr (++) ""
+
+
 
 -- Shuffling will come in another version (not in this demo)
 
@@ -104,12 +114,21 @@ player2Deck =
     [ Cow, Dog, Fish, Dog, Fish, Horse, Dog, Cow, Duck, Fish, Cow, Rooster ]
 
 
+
 -- State Helpers
+
 
 msgToString : Msg -> String
 msgToString msg =
     case msg of
-    NoOp    -> "No Operation"
-    TurnCard t -> "Turn Card " ++ (turnToString t)
-    Snap t -> "Snap " ++ (turnToString t)
-    RevertHistory i -> "Reverting to Message " ++ (String.fromInt i)
+        NoOp ->
+            "No Operation"
+
+        TurnCard t ->
+            "Turn Card " ++ turnToString t
+
+        Snap t ->
+            "Snap " ++ turnToString t
+
+        Replay i ->
+            "Replaying to Message " ++ String.fromInt i

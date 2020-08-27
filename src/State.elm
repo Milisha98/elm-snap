@@ -1,6 +1,6 @@
 module State exposing (initialModel, update)
 
-import Helper exposing (ifTrue)
+import Helper exposing (appendToList)
 import Types exposing (Card(..), Model, Msg(..), Turn(..))
 
 
@@ -14,8 +14,8 @@ initialModel : Model
 initialModel =
     { player1 = Helper.player1Deck
     , player2 = Helper.player2Deck
-    , pile1 = Maybe.Nothing
-    , pile2 = Maybe.Nothing
+    , pile1 = []
+    , pile2 = []
     , message = "Welcome! Player 1 to start."
     , turn = Player1
     , round = 1
@@ -35,7 +35,7 @@ update msg model =
         NoOp ->
             model
 
-        TurnCard player ->
+        TurnCard _ ->
             model
                 |> addMessage msg
                 |> turnCard
@@ -46,9 +46,9 @@ update msg model =
                 |> addMessage msg
                 |> snap player
 
-        RevertHistory index ->
-            model 
-                |> revertHistory index
+        Replay index ->
+            model
+                |> replayToMessage index
 
 
 
@@ -66,13 +66,13 @@ turnCard model =
     case model.turn of
         Player1 ->
             { model
-                | pile1 = model.player1 |> List.head
+                | pile1 = model.pile1 |> List.append (model.player1 |> List.take 1)
                 , player1 = model.player1 |> removeFromStack
             }
 
         Player2 ->
             { model
-                | pile2 = model.player2 |> List.head
+                | pile2 = model.pile2 |> List.append (model.player2 |> List.take 1)
                 , player2 = model.player2 |> removeFromStack
             }
 
@@ -120,33 +120,26 @@ snap : Turn -> Model -> Model
 snap who model =
     let
         isSnap =
-            model.pile1 /= Nothing && model.pile1 == model.pile2
+            List.head model.pile1 /= Nothing && List.head model.pile1 == List.head model.pile2
 
         addPile pile =
-            let
-                p1 =
-                    model.pile1 |> Maybe.withDefault Cow
-
-                p2 =
-                    model.pile2 |> Maybe.withDefault Cow
-            in
-            p2 :: (p1 :: pile)
+            pile |> List.append model.pile1 |> List.append model.pile2
     in
     if isSnap then
         case who of
             Player1 ->
                 { model
                     | player1 = model.player1 |> addPile
-                    , pile1 = Nothing
-                    , pile2 = Nothing
+                    , pile1 = []
+                    , pile2 = []
                     , message = "Player 1 wins that round."
                 }
 
             Player2 ->
                 { model
                     | player2 = model.player2 |> addPile
-                    , pile1 = Nothing
-                    , pile2 = Nothing
+                    , pile1 = []
+                    , pile2 = []
                     , message = "Player 2 wins that round."
                 }
 
@@ -157,17 +150,19 @@ snap who model =
         model
 
 
+
 --
 -- State Functions
 --
 
+
 addMessage : Msg -> Model -> Model
 addMessage msg model =
-    { model | history = (List.append model.history (List.singleton msg)) }
+    { model | history = model.history |> appendToList msg }
 
 
-revertHistory : Int -> Model -> Model
-revertHistory index model =
-    model.history 
+replayToMessage : Int -> Model -> Model
+replayToMessage index model =
+    model.history
         |> List.take index
-        |> List.foldl (update) initialModel
+        |> List.foldl update initialModel
