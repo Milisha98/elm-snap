@@ -1,6 +1,6 @@
-module Helper exposing (cardToIcon, cardToString, ifTrue, player1Deck, player2Deck, pluralize, turnToString)
+module Helper exposing (cardToIcon, cardToString, ifTrue, player1Deck, player2Deck, pluralize, turnToString, msgToString)
 
-import Types exposing (Card(..), Turn(..))
+import Types exposing (Card(..), Turn(..), Msg(..))
 
 
 ifTrue f a b =
@@ -102,3 +102,14 @@ player1Deck =
 player2Deck : List Card
 player2Deck =
     [ Cow, Dog, Fish, Dog, Fish, Horse, Dog, Cow, Duck, Fish, Cow, Rooster ]
+
+
+-- State Helpers
+
+msgToString : Msg -> String
+msgToString msg =
+    case msg of
+    NoOp    -> "No Operation"
+    TurnCard t -> "Turn Card " ++ (turnToString t)
+    Snap t -> "Snap " ++ (turnToString t)
+    RevertHistory i -> "Reverting to Message " ++ (String.fromInt i)

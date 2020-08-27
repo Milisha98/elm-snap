@@ -9,13 +9,15 @@ type alias Model =
     , message : String
     , turn : Turn
     , round : Int
+    , history : List Msg
     }
 
 
 type Msg
     = NoOp
-    | TurnCard
+    | TurnCard Turn
     | Snap Turn
+    | RevertHistory Int
 
 
 

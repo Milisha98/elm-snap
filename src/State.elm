@@ -19,6 +19,7 @@ initialModel =
     , message = "Welcome! Player 1 to start."
     , turn = Player1
     , round = 1
+    , history = []
     }
 
 
@@ -34,14 +35,20 @@ update msg model =
         NoOp ->
             model
 
-        TurnCard ->
+        TurnCard player ->
             model
+                |> addMessage msg
                 |> turnCard
                 |> changeTurns
 
         Snap player ->
             model
+                |> addMessage msg
                 |> snap player
+
+        RevertHistory index ->
+            model 
+                |> revertHistory index
 
 
 
@@ -148,3 +155,19 @@ snap who model =
 
     else
         model
+
+
+--
+-- State Functions
+--
+
+addMessage : Msg -> Model -> Model
+addMessage msg model =
+    { model | history = (List.append model.history (List.singleton msg)) }
+
+
+revertHistory : Int -> Model -> Model
+revertHistory index model =
+    model.history 
+        |> List.take index
+        |> List.foldl (update) initialModel

@@ -23,9 +23,6 @@ view model =
             [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ text "Model" ] ]
             , div [ class "row" ] []
             ]
-
-        -- , viewPile NoOp
-        -- , viewCard Horse
         ]
 
 
@@ -36,7 +33,7 @@ viewPlayer player model =
             ifTrue (player == Player1) model.player1 model.player2
 
         cmd =
-            ifTrue (player == model.turn) TurnCard NoOp
+            ifTrue (player == model.turn) (TurnCard player) NoOp
 
         show =
             case playerCards of
@@ -59,7 +56,12 @@ viewMessages : Model -> Html Msg
 viewMessages model =
     div [ class "container form-box" ]
         [ div [ class "row form-box-bottom" ] [ h2 [ class "form-label" ] [ text "Messages" ] ]
+        , div [ class "container" ] (model.history |> List.indexedMap Tuple.pair |> List.map viewMessage)
         ]
+
+viewMessage : (Int, Msg) -> Html Msg
+viewMessage (index, msg) =
+    div [ class "row" ] [ div [ class "col-sm-12" ] [ a [ onClick (RevertHistory index) ] [ msg |> Helper.msgToString |> text ] ] ]
 
 
 viewGameArea : Model -> Html Msg
@@ -101,7 +103,7 @@ viewPile msg =
     let
         card =
             case msg of
-                TurnCard ->
+                TurnCard p ->
                     viewCardBack msg
 
                 _ ->
